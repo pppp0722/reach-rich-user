@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 체크아웃
+      - name: checkout
+        uses: actions/checkout@v3
+
+      # JDK version 설정
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          
+      ## 그래들 캐싱
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+            
+      # Config 파일 Write
+      - name: make env file
+        run: |
+          # main 설정 파일 디렉토리로 이동
+          cd ./src/main/resources
+          
+          # application-mysql.yml
+          touch ./application-mysql.yml
+          echo "${{secrets.CI_APPLICATION_MYSQL}}" >> ./application-mysql.yml
+          
+          # application-redis.yml
+          touch ./application-redis.yml
+          echo "${{ secrets.CI_APPLICATION_REDIS }}" >> ./application-redis.yml
+        shell: bash
+
+      # Gradle build
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Gradle wrapper
+        run: gradle wrap
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        shell: bash
