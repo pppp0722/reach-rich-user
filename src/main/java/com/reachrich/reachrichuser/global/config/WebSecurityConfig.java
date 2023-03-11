@@ -64,7 +64,7 @@ public class WebSecurityConfig {
             .antMatchers(
                 "/**"
             ).permitAll()
-            .anyRequest().hasAnyRole("USER")
+//            .anyRequest().hasAnyRole("USER")
             .and()
             // 사용하지 않는 필터
             .formLogin()
