@@ -2,6 +2,8 @@ package com.reachrich.reachrichuser.user.service;
 
 import static com.reachrich.reachrichuser.global.util.Const.LOGIN_USER;
 
+import com.reachrich.reachrichuser.global.exception.CustomException;
+import com.reachrich.reachrichuser.global.exception.ErrorCode;
 import com.reachrich.reachrichuser.user.domain.User;
 import com.reachrich.reachrichuser.user.dto.LoginDto;
 import com.reachrich.reachrichuser.user.dto.RegisterDto;
@@ -23,14 +25,15 @@ public class UserService {
     @Transactional(readOnly = true)
     public String login(HttpSession session, LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail())
-            .orElseThrow(RuntimeException::new)
+            .orElseThrow(() -> new CustomException(ErrorCode.LOGIN_DENIED))
             .toDomain();
 
         if (!user.isPasswordMatch(passwordEncoder, loginDto.getPassword())) {
-            throw new RuntimeException("아이디 혹은 비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.LOGIN_DENIED);
         }
 
         session.setAttribute(LOGIN_USER, user);
+
         return session.getId();
     }
 
