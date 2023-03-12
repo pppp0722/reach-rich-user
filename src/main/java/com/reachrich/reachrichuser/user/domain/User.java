@@ -23,7 +23,7 @@ public class User implements Serializable {
     private String email;
     private String password;
     private String nickname;
-    private String role;
+    private String roles;
 
     public boolean isPasswordMatch(PasswordEncoder passwordEncoder, String password) {
         return passwordEncoder.matches(password, this.password);
@@ -35,13 +35,13 @@ public class User implements Serializable {
             .email(registerDto.getEmail())
             .password(encryptedPassword)
             .nickname(registerDto.getNickname())
-            .role(ROLE_USER)
+            .roles(ROLE_USER)
             .build();
     }
 
     public UserAuthenticationToken makeAuthentication() {
         List<GrantedAuthority> roles = new ArrayList<>();
-        StringTokenizer st = new StringTokenizer(role, ",");
+        StringTokenizer st = new StringTokenizer(this.roles, ",");
         while (st.hasMoreTokens()) {
             roles.add(new SimpleGrantedAuthority(st.nextToken()));
         }
@@ -54,7 +54,7 @@ public class User implements Serializable {
             .email(email)
             .password(password)
             .nickname(nickname)
-            .role(role)
+            .roles(roles)
             .build();
     }
 }

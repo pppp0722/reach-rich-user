@@ -1,7 +1,9 @@
 package com.reachrich.reachrichuser.global.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reachrich.reachrichuser.global.filter.UserAuthenticationFilter;
 import com.reachrich.reachrichuser.global.handler.CustomAccessDeniedHandler;
+import com.reachrich.reachrichuser.global.handler.CustomAuthenticationEntryPoint;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +14,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -59,8 +64,18 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public CustomAccessDeniedHandler customAccessDeniedHandler() {
-        return new CustomAccessDeniedHandler();
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint(ObjectMapper objectMapper) {
+        return new CustomAuthenticationEntryPoint(objectMapper);
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(ObjectMapper objectMapper) {
+        return new CustomAccessDeniedHandler(objectMapper);
     }
 
     @Bean
@@ -87,9 +102,13 @@ public class WebSecurityConfig {
             .disable()
             .logout()
             .disable()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
             // 인가 실패 Response
             .exceptionHandling()
-            .accessDeniedHandler(customAccessDeniedHandler())
+            .authenticationEntryPoint(authenticationEntryPoint(objectMapper()))
+            .accessDeniedHandler(accessDeniedHandler(objectMapper()))
             .and()
             // Redis Session
             .addFilterBefore(userAuthenticationFilter(),

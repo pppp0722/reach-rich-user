@@ -1,19 +1,18 @@
 package com.reachrich.reachrichuser.user.controller;
 
+import static com.reachrich.reachrichuser.global.util.Const.LOGIN_USER;
+
 import com.reachrich.reachrichuser.user.dto.LoginDto;
 import com.reachrich.reachrichuser.user.dto.RegisterDto;
 import com.reachrich.reachrichuser.user.service.UserService;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -28,9 +27,8 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpSession session, @AuthenticationPrincipal String principal) {
-        log.info("로그아웃된 사용자 이메일 : {}", principal);
-        session.invalidate();
+    public ResponseEntity<String> logout(HttpSession session) {
+        session.removeAttribute(LOGIN_USER);
         return ResponseEntity.ok().build();
     }
 

@@ -6,21 +6,21 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 @RequiredArgsConstructor
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper objectMapper;
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response,
-        AccessDeniedException accessDeniedException) throws IOException {
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+        AuthenticationException authException) throws IOException {
         response.setContentType("text/plain;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter()
-            .write(objectMapper.writeValueAsString(new ErrorResponse("API 호출에 필요한 권한이 없습니다.")));
+            .write(objectMapper.writeValueAsString(new ErrorResponse("로그인 인증 정보가 존재하지 않습니다.")));
         response.getWriter().flush();
         response.getWriter().close();
     }

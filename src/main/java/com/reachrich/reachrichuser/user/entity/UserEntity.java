@@ -35,7 +35,7 @@ public class UserEntity {
     private String nickname;
 
     @Column(nullable = false, length = 20)
-    private String role;
+    private String roles;
 
     public User toDomain() {
         return User.builder()
@@ -43,7 +43,7 @@ public class UserEntity {
             .email(email)
             .password(password)
             .nickname(nickname)
-            .role(role)
+            .roles(roles)
             .build();
     }
 }
