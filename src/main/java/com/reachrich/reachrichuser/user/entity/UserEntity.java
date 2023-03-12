@@ -34,12 +34,16 @@ public class UserEntity {
     @Column(nullable = false, length = 20)
     private String nickname;
 
+    @Column(nullable = false, length = 20)
+    private String role;
+
     public User toDomain() {
         return User.builder()
             .id(id)
             .email(email)
             .password(password)
             .nickname(nickname)
+            .role(role)
             .build();
     }
 }
