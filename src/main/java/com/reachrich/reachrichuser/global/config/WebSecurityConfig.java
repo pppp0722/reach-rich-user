@@ -44,7 +44,6 @@ public class WebSecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-
     }
 
     @Bean
@@ -105,7 +104,7 @@ public class WebSecurityConfig {
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            // 인가 실패 Response
+            // 인증/인가 실패 Response
             .exceptionHandling()
             .authenticationEntryPoint(authenticationEntryPoint(objectMapper()))
             .accessDeniedHandler(accessDeniedHandler(objectMapper()))
@@ -115,7 +114,6 @@ public class WebSecurityConfig {
                 UsernamePasswordAuthenticationFilter.class)
             // CORS
             .cors().configurationSource(corsConfigurationSource());
-
         return http.build();
     }
 }

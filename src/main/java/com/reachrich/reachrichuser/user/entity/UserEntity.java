@@ -1,6 +1,5 @@
 package com.reachrich.reachrichuser.user.entity;
 
-import com.reachrich.reachrichuser.user.domain.User;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,14 +35,4 @@ public class UserEntity {
 
     @Column(nullable = false, length = 20)
     private String roles;
-
-    public User toDomain() {
-        return User.builder()
-            .id(id)
-            .email(email)
-            .password(password)
-            .nickname(nickname)
-            .roles(roles)
-            .build();
-    }
 }

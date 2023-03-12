@@ -29,6 +29,15 @@ public class User implements Serializable {
         return passwordEncoder.matches(password, this.password);
     }
 
+    public UserAuthenticationToken makeAuthentication() {
+        List<GrantedAuthority> roles = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(this.roles, ",");
+        while (st.hasMoreTokens()) {
+            roles.add(new SimpleGrantedAuthority(st.nextToken()));
+        }
+        return new UserAuthenticationToken(email, password, roles);
+    }
+
     public static User createNewUser(PasswordEncoder passwordEncoder, RegisterDto registerDto) {
         String encryptedPassword = passwordEncoder.encode(registerDto.getPassword());
         return User.builder()
@@ -39,13 +48,14 @@ public class User implements Serializable {
             .build();
     }
 
-    public UserAuthenticationToken makeAuthentication() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-        StringTokenizer st = new StringTokenizer(this.roles, ",");
-        while (st.hasMoreTokens()) {
-            roles.add(new SimpleGrantedAuthority(st.nextToken()));
-        }
-        return new UserAuthenticationToken(email, password, roles);
+    public static User fromEntity(UserEntity userEntity) {
+        return User.builder()
+            .id(userEntity.getId())
+            .email(userEntity.getEmail())
+            .password(userEntity.getPassword())
+            .nickname(userEntity.getNickname())
+            .roles(userEntity.getRoles())
+            .build();
     }
 
     public UserEntity toEntity() {

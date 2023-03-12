@@ -1,7 +1,5 @@
 package com.reachrich.reachrichuser.user.controller;
 
-import static com.reachrich.reachrichuser.global.util.Const.LOGIN_USER;
-
 import com.reachrich.reachrichuser.user.dto.LoginDto;
 import com.reachrich.reachrichuser.user.dto.RegisterDto;
 import com.reachrich.reachrichuser.user.service.UserService;
@@ -28,7 +26,7 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
-        session.removeAttribute(LOGIN_USER);
+        userService.logout(session);
         return ResponseEntity.ok().build();
     }
 

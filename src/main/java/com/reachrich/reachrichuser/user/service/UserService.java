@@ -24,17 +24,19 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public String login(HttpSession session, LoginDto loginDto) {
-        User user = userRepository.findByEmail(loginDto.getEmail())
-            .orElseThrow(() -> new CustomException(ErrorCode.LOGIN_DENIED))
-            .toDomain();
+        User user = User.fromEntity(userRepository.findByEmail(loginDto.getEmail())
+            .orElseThrow(() -> new CustomException(ErrorCode.LOGIN_DENIED)));
 
         if (!user.isPasswordMatch(passwordEncoder, loginDto.getPassword())) {
             throw new CustomException(ErrorCode.LOGIN_DENIED);
         }
 
         session.setAttribute(LOGIN_USER, user);
-
         return session.getId();
+    }
+
+    public void logout(HttpSession session) {
+        session.removeAttribute(LOGIN_USER);
     }
 
     // TODO: 이메일 인증 구현
