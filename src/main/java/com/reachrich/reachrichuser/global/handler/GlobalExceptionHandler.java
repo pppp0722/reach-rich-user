@@ -1,5 +1,7 @@
 package com.reachrich.reachrichuser.global.handler;
 
+import static com.reachrich.reachrichuser.global.exception.ErrorCode.INTERNAL_SERVER_ERROR;
+
 import com.reachrich.reachrichuser.global.exception.CustomException;
 import com.reachrich.reachrichuser.global.exception.ErrorCode;
 import com.reachrich.reachrichuser.global.exception.ErrorResponse;
@@ -17,7 +19,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     private ResponseEntity<ErrorResponse> handleException(Exception e) {
-        return handleExceptionInternal(ErrorCode.INTERNAL_SERVER_ERROR);
+        return handleExceptionInternal(INTERNAL_SERVER_ERROR);
     }
 
     private ResponseEntity<ErrorResponse> handleExceptionInternal(ErrorCode errorCode) {

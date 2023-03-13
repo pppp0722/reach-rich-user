@@ -84,7 +84,7 @@ public class WebSecurityConfig {
             .authorizeRequests()
             .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
             .antMatchers(
-                "/users/login", "/users/register"
+                "/users/login", "/users/register", "/users/verify-email/**"
             ).permitAll()
             .anyRequest().hasAnyRole("USER")
             .and()
