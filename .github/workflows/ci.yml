@@ -40,6 +40,10 @@ jobs:
           # application-redis.yml
           touch ./application-redis.yml
           echo "${{ secrets.CI_APPLICATION_REDIS }}" >> ./application-redis.yml
+          
+          # application-email.yml
+          touch ./application-email.yml
+          echo "${{ secrets.APPLICATION_EMAIL }}" >> ./application-email.yml
         shell: bash
 
       - name: Grant Execute Permission For Gradlew
