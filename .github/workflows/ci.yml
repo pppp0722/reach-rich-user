@@ -35,11 +35,15 @@ jobs:
           
           # application-mysql.yml
           touch ./application-mysql.yml
-          echo "${{secrets.CI_APPLICATION_MYSQL}}" >> ./application-mysql.yml
+          echo "${{secrets.APPLICATION_MYSQL}}" >> ./application-mysql.yml
           
           # application-redis.yml
           touch ./application-redis.yml
-          echo "${{ secrets.CI_APPLICATION_REDIS }}" >> ./application-redis.yml
+          echo "${{ secrets.APPLICATION_REDIS }}" >> ./application-redis.yml
+          
+          # application-jwt.yml
+          touch ./application-jwt.yml
+          echo "${{ secrets.APPLICATION_JWT }}" >> ./application-jwt.yml
           
           # application-email.yml
           touch ./application-email.yml
