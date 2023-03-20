@@ -1,6 +1,7 @@
 package com.reachrich.reachrichuser.global.util;
 
 import static com.reachrich.reachrichuser.global.exception.ErrorCode.EMAIL_SEND_FAILURE;
+import static com.reachrich.reachrichuser.global.util.Const.EMAIL_SUBJECT;
 
 import com.reachrich.reachrichuser.global.exception.CustomException;
 import javax.mail.internet.MimeMessage;
@@ -21,7 +22,7 @@ public class EmailSender {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
             helper.setTo(email);
-            helper.setSubject("[Reach Rich] 회원가입 인증코드 발송");
+            helper.setSubject(EMAIL_SUBJECT);
             helper.setText(message, true);
             javaMailSender.send(mimeMessage);
         } catch (Exception e) {

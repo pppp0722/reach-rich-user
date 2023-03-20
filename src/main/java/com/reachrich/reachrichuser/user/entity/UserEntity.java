@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -32,7 +32,4 @@ public class UserEntity {
 
     @Column(nullable = false, length = 20)
     private String nickname;
-
-    @Column(nullable = false, length = 20)
-    private String roles;
 }

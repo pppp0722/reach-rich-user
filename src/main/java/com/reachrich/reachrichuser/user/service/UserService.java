@@ -4,18 +4,19 @@ import static com.reachrich.reachrichuser.global.exception.ErrorCode.DUPLICATED_
 import static com.reachrich.reachrichuser.global.exception.ErrorCode.LOGIN_DENIED;
 import static com.reachrich.reachrichuser.global.exception.ErrorCode.VERIFY_EMAIL_FAILURE;
 import static com.reachrich.reachrichuser.global.util.Const.AUTH_CODE;
-import static com.reachrich.reachrichuser.global.util.Const.AUTH_MAIL_LIMIT_SECONDS;
+import static com.reachrich.reachrichuser.global.util.Const.AUTH_EMAIL_LIMIT_SECONDS;
 import static com.reachrich.reachrichuser.global.util.Const.EMAIL;
 import static com.reachrich.reachrichuser.global.util.Const.EMAIL_AUTH;
-import static com.reachrich.reachrichuser.global.util.Const.LOGIN_USER;
 import static java.util.Objects.isNull;
 
+import com.reachrich.reachrichuser.global.Jwt.JwtGenerator;
 import com.reachrich.reachrichuser.global.exception.CustomException;
-import com.reachrich.reachrichuser.global.exception.ErrorCode;
 import com.reachrich.reachrichuser.global.util.EmailSender;
 import com.reachrich.reachrichuser.global.util.RandomGenerator;
+import com.reachrich.reachrichuser.refreshtoken.service.RefreshTokenService;
 import com.reachrich.reachrichuser.user.domain.User;
 import com.reachrich.reachrichuser.user.dto.LoginDto;
+import com.reachrich.reachrichuser.user.dto.LogoutDto;
 import com.reachrich.reachrichuser.user.dto.RegisterDto;
 import com.reachrich.reachrichuser.user.repository.UserRepository;
 import java.util.Map;
@@ -27,15 +28,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
     private final EmailSender emailSender;
+    private final JwtGenerator jwtGenerator;
 
-    @Transactional(readOnly = true)
-    public String login(HttpSession session, LoginDto loginDto) {
+    public String login(LoginDto loginDto) {
         User user = User.fromEntity(userRepository.findByEmail(loginDto.getEmail())
             .orElseThrow(() -> new CustomException(LOGIN_DENIED)));
 
@@ -43,15 +45,16 @@ public class UserService {
             throw new CustomException(LOGIN_DENIED);
         }
 
-        session.setAttribute(LOGIN_USER, user);
-        return session.getId();
+        String refreshToken = jwtGenerator.generateRefreshToken(user.getNickname());
+        refreshTokenService.createRefreshToken(user.getNickname(), refreshToken);
+        return refreshToken;
     }
 
-    public void logout(HttpSession session) {
-        session.removeAttribute(LOGIN_USER);
+    public void logout(LogoutDto logoutDto) {
+        refreshTokenService.deleteRefreshToken(logoutDto.getNickname());
     }
 
-    public void sendAuthEmail(HttpSession session, String email) {
+    public void sendAuthEmail(String email, HttpSession session) {
         if (userRepository.existsByEmail(email)) {
             throw new CustomException(DUPLICATED_EMAIL);
         }
@@ -60,10 +63,11 @@ public class UserService {
         emailSender.sendVerificationEmail(email, authCode);
 
         session.setAttribute(EMAIL_AUTH, Map.of(EMAIL, email, AUTH_CODE, authCode));
-        session.setMaxInactiveInterval(AUTH_MAIL_LIMIT_SECONDS);
+        session.setMaxInactiveInterval(AUTH_EMAIL_LIMIT_SECONDS);
     }
 
-    public String register(HttpSession session, RegisterDto registerDto) {
+    @Transactional
+    public String register(RegisterDto registerDto, HttpSession session) {
         String email = registerDto.getEmail();
         String authCode = registerDto.getAuthCode();
 
@@ -75,6 +79,7 @@ public class UserService {
             throw new CustomException(VERIFY_EMAIL_FAILURE);
         }
 
+        session.removeAttribute(EMAIL_AUTH);
         User newUser = User.createNewUser(passwordEncoder, registerDto);
         return userRepository.save(newUser.toEntity()).getNickname();
     }
