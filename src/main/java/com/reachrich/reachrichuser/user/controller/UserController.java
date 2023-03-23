@@ -40,7 +40,10 @@ public class UserController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestBody LogoutDto logoutDto) {
         userService.logout(logoutDto);
-        return ResponseEntity.ok().build();
+        ResponseCookie cookie = ResponseCookie.from(REFRESH_TOKEN_HEADER, null)
+            .maxAge(0)
+            .build();
+        return ResponseEntity.ok().header(SET_COOKIE, cookie.toString()).build();
     }
 
     @PostMapping("/register")

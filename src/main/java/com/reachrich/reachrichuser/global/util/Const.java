@@ -6,7 +6,9 @@ import org.springframework.stereotype.Component;
 public class Const {
 
     // JWT
+    public static final String ACCESS_TOKEN_HEADER = "Access-Token";
     public static final String REFRESH_TOKEN_HEADER = "Refresh-Token";
+    public static final long ACCESS_TOKEN_EXPIRY_SECONDS = 1800;
     public static final long REFRESH_TOKEN_EXPIRY_SECONDS = 1209600;
 
     // Redis
