@@ -7,6 +7,7 @@ import static com.reachrich.reachrichuser.global.util.Const.AUTH_CODE;
 import static com.reachrich.reachrichuser.global.util.Const.AUTH_EMAIL_LIMIT_SECONDS;
 import static com.reachrich.reachrichuser.global.util.Const.EMAIL;
 import static com.reachrich.reachrichuser.global.util.Const.EMAIL_AUTH;
+import static com.reachrich.reachrichuser.global.util.Const.REFRESH_TOKEN_EXPIRY_SECONDS;
 import static java.util.Objects.isNull;
 
 import com.reachrich.reachrichuser.global.Jwt.JwtGenerator;
