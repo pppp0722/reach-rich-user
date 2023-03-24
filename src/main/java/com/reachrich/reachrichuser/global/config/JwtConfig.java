@@ -31,6 +31,7 @@ public class JwtConfig {
         return JwtGenerator.builder()
             .issuer(issuer)
             .clientSecret(clientSecret)
+            .accessTokenExpirySeconds(accessTokenExpirySeconds)
             .refreshTokenExpirySeconds(refreshTokenExpirySeconds)
             .build();
     }
