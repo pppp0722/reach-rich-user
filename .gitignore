@@ -39,3 +39,5 @@ out/
 ### Config ###
 *.yml
 !/src/main/resources/application.yml
+!/.github/workflows/cd.yml
+!/.github/workflows/ci.yml

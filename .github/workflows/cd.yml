@@ -71,4 +71,4 @@ jobs:
             docker rm -f reach-rich-user
             docker rmi ${{ secrets.DOCKER_USERNAME }}/reach-rich-user
             docker pull ${{ secrets.DOCKER_USERNAME }}/reach-rich-user
-            docker-compose up -d
+            docker-compose up -d user
