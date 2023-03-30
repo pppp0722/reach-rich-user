@@ -11,7 +11,10 @@ import static com.reachrich.reachrichuser.global.util.Const.UPPER_CASE_START;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RandomGenerator {
 
     public static String generateAuthCode() {
