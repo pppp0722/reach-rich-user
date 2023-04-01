@@ -2,14 +2,13 @@ package com.reachrich.reachrichuser.user.domain;
 
 import com.reachrich.reachrichuser.user.dto.RegisterDto;
 import com.reachrich.reachrichuser.user.entity.UserEntity;
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @AllArgsConstructor
 @Builder
-public class User implements Serializable {
+public class User {
 
     private Long id;
     private String email;
