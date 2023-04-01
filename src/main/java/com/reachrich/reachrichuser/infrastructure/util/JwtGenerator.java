@@ -21,12 +21,12 @@ public class JwtGenerator {
         this.refreshTokenExpirySeconds = refreshTokenExpirySeconds;
     }
 
-    public String generateAccessToken(String nickname) {
-        return generateToken(nickname, accessTokenExpirySeconds);
-    }
-
     public String generateRefreshToken(String nickname) {
         return generateToken(nickname, refreshTokenExpirySeconds);
+    }
+
+    public String generateAccessToken(String nickname) {
+        return generateToken(nickname, accessTokenExpirySeconds);
     }
 
     private String generateToken(String nickname, long expirySeconds) {

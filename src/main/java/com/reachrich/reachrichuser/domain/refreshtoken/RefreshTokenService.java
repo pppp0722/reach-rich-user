@@ -1,4 +1,4 @@
-package com.reachrich.reachrichuser.application.service;
+package com.reachrich.reachrichuser.domain.refreshtoken;
 
 import static com.reachrich.reachrichuser.domain.exception.ErrorCode.ACCESS_TOKEN_REISSUE_FAIL;
 
@@ -6,7 +6,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.reachrich.reachrichuser.domain.exception.CustomException;
-import com.reachrich.reachrichuser.domain.refreshtoken.RefreshToken;
 import com.reachrich.reachrichuser.infrastructure.repository.RefreshTokenRepository;
 import com.reachrich.reachrichuser.infrastructure.util.JwtGenerator;
 import java.util.Date;
@@ -39,6 +38,10 @@ public class RefreshTokenService {
 
     public void deleteRefreshToken(String nickname) {
         refreshTokenRepository.deleteById(nickname);
+    }
+
+    public String generateRefreshToken(String nickname) {
+        return jwtGenerator.generateRefreshToken(nickname);
     }
 
     public String generateAccessToken(String refreshToken) {

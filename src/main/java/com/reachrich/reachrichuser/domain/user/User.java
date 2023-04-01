@@ -1,5 +1,6 @@
 package com.reachrich.reachrichuser.domain.user;
 
+import com.reachrich.reachrichuser.domain.user.dto.RegisterDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
