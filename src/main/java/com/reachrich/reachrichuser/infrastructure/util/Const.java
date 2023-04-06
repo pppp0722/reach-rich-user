@@ -13,7 +13,12 @@ public class Const {
     public static final String REFRESH_TOKEN_HEADER = "Refresh-Token";
     public static final long ACCESS_TOKEN_EXPIRY_SECONDS = 1800;
     public static final long REFRESH_TOKEN_EXPIRY_SECONDS = 1209600;
+    public static final long EXPIRED_REFRESH_TOKEN_EXPIRY_SECONDS = 0;
     public static final String EMPTY_REFRESH_TOKEN_VALUE = "empty";
+
+    public enum JwtType {
+        ACCESS_TOKEN, REFRESH_TOKEN, EXPIRED_REFRESH_TOKEN
+    }
 
     // Redis
     public static final String EMAIL_AUTH = "emailAuth";

@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -19,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Getter
 public class User {
 
     @Id
@@ -35,20 +33,19 @@ public class User {
     @Column(nullable = false, length = 20)
     private String nickname;
 
+    public static User ofPwEncoderAndDto(PasswordEncoder passwordEncoder, RegisterDto registerDto) {
+        return User.builder()
+            .email(registerDto.getEmail())
+            .password(passwordEncoder.encode(registerDto.getPassword()))
+            .nickname(registerDto.getNickname())
+            .build();
+    }
+
     public boolean isPasswordMatch(PasswordEncoder passwordEncoder, String password) {
         return passwordEncoder.matches(password, this.password);
     }
 
     public String getNickname() {
         return nickname;
-    }
-
-    public static User registerNewUser(PasswordEncoder passwordEncoder, RegisterDto registerDto) {
-        String encryptedPassword = passwordEncoder.encode(registerDto.getPassword());
-        return User.builder()
-            .email(registerDto.getEmail())
-            .password(encryptedPassword)
-            .nickname(registerDto.getNickname())
-            .build();
     }
 }

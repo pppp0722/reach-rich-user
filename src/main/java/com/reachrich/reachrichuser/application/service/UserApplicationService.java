@@ -18,15 +18,19 @@ import com.reachrich.reachrichuser.domain.user.UserService;
 import com.reachrich.reachrichuser.domain.user.dto.LoginDto;
 import com.reachrich.reachrichuser.domain.user.dto.LogoutDto;
 import com.reachrich.reachrichuser.domain.user.dto.RegisterDto;
+import com.reachrich.reachrichuser.domain.validator.ChainValidator;
 import com.reachrich.reachrichuser.infrastructure.util.EmailSender;
 import com.reachrich.reachrichuser.infrastructure.util.RandomGenerator;
 import java.util.Map;
+import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserApplicationService {
@@ -38,13 +42,20 @@ public class UserApplicationService {
 
     @Transactional(readOnly = true)
     public String login(LoginDto loginDto) {
-        User user = userService.getUserByEmail(loginDto.getEmail())
-            .orElseThrow(() -> new CustomException(LOGIN_DENIED));
+        Optional<User> maybeUser = userService.getUserByEmail(loginDto.getEmail());
 
-        if (!user.isPasswordMatch(passwordEncoder, loginDto.getPassword())) {
+        Runnable actionOnNotMatch = () -> {
+            log.info("이메일 혹은 비밀번호 불일치");
             throw new CustomException(LOGIN_DENIED);
-        }
+        };
 
+        new ChainValidator<>(maybeUser)
+            .next(Optional::isPresent, actionOnNotMatch)
+            .next(e -> e.get().isPasswordMatch(passwordEncoder, loginDto.getPassword()),
+                actionOnNotMatch)
+            .execute();
+
+        User user = maybeUser.get();
         String refreshToken = refreshTokenService.generateRefreshToken(user.getNickname());
         refreshTokenService.createRefreshToken(user.getNickname(), refreshToken);
         return refreshToken;
@@ -58,6 +69,7 @@ public class UserApplicationService {
         if (EMPTY_REFRESH_TOKEN_VALUE.equals(refreshToken)) {
             throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
         }
+
         return refreshTokenService.generateAccessToken(refreshToken);
     }
 
@@ -79,16 +91,19 @@ public class UserApplicationService {
         String email = registerDto.getEmail();
         String authCode = registerDto.getAuthCode();
 
-        if (userService.existsByEmail(email)) {
-            throw new CustomException(DUPLICATED_EMAIL);
-        }
-
-        if (!isEmailAuthenticated(session, email, authCode)) {
-            throw new CustomException(VERIFY_EMAIL_FAILURE);
-        }
+        new ChainValidator<>(email)
+            .next(e -> !userService.existsByEmail(e), () -> {
+                log.info("중복된 이메일 사용 : {}", email);
+                throw new CustomException(DUPLICATED_EMAIL);
+            })
+            .next(e -> isEmailAuthenticated(session, e, authCode), () -> {
+                log.info("이메일 인증 실패");
+                throw new CustomException(VERIFY_EMAIL_FAILURE);
+            })
+            .execute();
 
         session.removeAttribute(EMAIL_AUTH);
-        User newUser = User.registerNewUser(passwordEncoder, registerDto);
+        User newUser = User.ofPwEncoderAndDto(passwordEncoder, registerDto);
         return userService.saveUser(newUser).getNickname();
     }
 
