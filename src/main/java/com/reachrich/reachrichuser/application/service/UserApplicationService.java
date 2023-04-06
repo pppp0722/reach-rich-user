@@ -2,7 +2,6 @@ package com.reachrich.reachrichuser.application.service;
 
 import static com.reachrich.reachrichuser.domain.exception.ErrorCode.ACCESS_TOKEN_REISSUE_FAIL;
 import static com.reachrich.reachrichuser.domain.exception.ErrorCode.DUPLICATED_EMAIL;
-import static com.reachrich.reachrichuser.domain.exception.ErrorCode.LOGIN_DENIED;
 import static com.reachrich.reachrichuser.domain.exception.ErrorCode.VERIFY_EMAIL_FAILURE;
 import static com.reachrich.reachrichuser.infrastructure.util.Const.AUTH_CODE;
 import static com.reachrich.reachrichuser.infrastructure.util.Const.AUTH_EMAIL_LIMIT_SECONDS;
@@ -19,6 +18,8 @@ import com.reachrich.reachrichuser.domain.user.dto.LoginDto;
 import com.reachrich.reachrichuser.domain.user.dto.LogoutDto;
 import com.reachrich.reachrichuser.domain.user.dto.RegisterDto;
 import com.reachrich.reachrichuser.domain.validator.ChainValidator;
+import com.reachrich.reachrichuser.domain.validator.LoginObjectToValidate;
+import com.reachrich.reachrichuser.domain.validator.LoginValidator;
 import com.reachrich.reachrichuser.infrastructure.util.EmailSender;
 import com.reachrich.reachrichuser.infrastructure.util.RandomGenerator;
 import java.util.Map;
@@ -44,16 +45,9 @@ public class UserApplicationService {
     public String login(LoginDto loginDto) {
         Optional<User> maybeUser = userService.getUserByEmail(loginDto.getEmail());
 
-        Runnable actionOnNotMatch = () -> {
-            log.info("이메일 혹은 비밀번호 불일치");
-            throw new CustomException(LOGIN_DENIED);
-        };
-
-        new ChainValidator<>(maybeUser)
-            .next(Optional::isPresent, actionOnNotMatch)
-            .next(e -> e.get().isPasswordMatch(passwordEncoder, loginDto.getPassword()),
-                actionOnNotMatch)
-            .execute();
+        LoginObjectToValidate objectToValidate = LoginObjectToValidate.of(maybeUser,
+            loginDto.getPassword(), passwordEncoder);
+        new LoginValidator(objectToValidate).execute();
 
         User user = maybeUser.get();
         String refreshToken = refreshTokenService.generateRefreshToken(user.getNickname());
@@ -91,12 +85,12 @@ public class UserApplicationService {
         String email = registerDto.getEmail();
         String authCode = registerDto.getAuthCode();
 
-        new ChainValidator<>(email)
-            .next(e -> !userService.existsByEmail(e), () -> {
+        new ChainValidator<>(null)
+            .next(e -> !userService.existsByEmail(email), () -> {
                 log.info("중복된 이메일 사용 : {}", email);
                 throw new CustomException(DUPLICATED_EMAIL);
             })
-            .next(e -> isEmailAuthenticated(session, e, authCode), () -> {
+            .next(e -> isEmailAuthenticated(session, email, authCode), () -> {
                 log.info("이메일 인증 실패");
                 throw new CustomException(VERIFY_EMAIL_FAILURE);
             })

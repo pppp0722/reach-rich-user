@@ -6,10 +6,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.reachrich.reachrichuser.domain.exception.CustomException;
-import com.reachrich.reachrichuser.domain.validator.ChainValidator;
+import com.reachrich.reachrichuser.domain.validator.RefreshTokenObjectToValidate;
+import com.reachrich.reachrichuser.domain.validator.RefreshTokenValidator;
 import com.reachrich.reachrichuser.infrastructure.repository.RefreshTokenRepository;
 import com.reachrich.reachrichuser.infrastructure.util.JwtGenerator;
-import java.util.Date;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -53,39 +53,13 @@ public class RefreshTokenService {
             throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
         }
 
-        new ChainValidator<>(decodedRefreshToken)
-            .next(this::isValidRefreshToken, () -> {
-                log.warn("유효하지 않은 Refresh Token 사용");
-                throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
-            })
-            .next(this::isAliveRefreshToken, () -> {
-                log.warn("차단된 Refresh Token 사용");
-                throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
-            })
-            .next(decoded -> isSameRefreshToken(decoded, refreshToken), () -> {
-                log.warn("발급하지 않은 Refresh Token 사용");
-                throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
-            })
-            .execute();
-
-        String nickname = decodedRefreshToken.getAudience().get(0);
-        return jwtGenerator.generateAccessToken(nickname);
-    }
-
-    private boolean isValidRefreshToken(DecodedJWT decodedRefreshToken) {
-        return decodedRefreshToken.getExpiresAt().after(new Date())
-            && "reach-rich".equals(decodedRefreshToken.getIssuer());
-    }
-
-    private boolean isAliveRefreshToken(DecodedJWT decodedRefreshToken) {
         String nickname = decodedRefreshToken.getAudience().get(0);
         Optional<RefreshToken> maybeRefreshToken = refreshTokenRepository.findById(nickname);
-        return maybeRefreshToken.isPresent();
-    }
 
-    private boolean isSameRefreshToken(DecodedJWT decodedRefreshToken, String refreshToken) {
-        String nickname = decodedRefreshToken.getAudience().get(0);
-        RefreshToken refreshTokenEntity = refreshTokenRepository.findById(nickname).get();
-        return refreshTokenEntity.isSameValue(refreshToken);
+        RefreshTokenObjectToValidate objectToValidate = RefreshTokenObjectToValidate.of(
+            decodedRefreshToken, refreshToken, maybeRefreshToken);
+        new RefreshTokenValidator(objectToValidate).execute();
+
+        return jwtGenerator.generateAccessToken(nickname);
     }
 }
