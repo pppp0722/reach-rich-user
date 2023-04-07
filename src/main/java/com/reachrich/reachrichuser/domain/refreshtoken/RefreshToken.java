@@ -21,7 +21,7 @@ public class RefreshToken implements Serializable {
 
     private String value;
 
-    public static RefreshToken ofNicknameAndValue(String nickname, String value) {
+    public static RefreshToken of(String nickname, String value) {
         return RefreshToken.builder()
             .nickname(nickname)
             .value(value)

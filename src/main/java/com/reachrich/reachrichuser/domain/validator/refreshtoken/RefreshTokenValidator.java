@@ -5,7 +5,6 @@ import static com.reachrich.reachrichuser.domain.exception.ErrorCode.ACCESS_TOKE
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.reachrich.reachrichuser.domain.exception.CustomException;
 import com.reachrich.reachrichuser.domain.validator.ChainValidator;
-import com.reachrich.reachrichuser.domain.validator.refreshtoken.RefreshTokenObjectToValidate;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +16,7 @@ public class RefreshTokenValidator {
     public RefreshTokenValidator(RefreshTokenObjectToValidate objectToValidate) {
         chainValidator = new ChainValidator<>(objectToValidate)
             .next(this::isValidRefreshToken, () -> {
-                log.warn("유효하지 않은 Refresh Token 사용");
+                log.warn("만료된 Refresh Token 사용");
                 throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
             })
             .next(this::isAliveRefreshToken, () -> {
@@ -25,7 +24,7 @@ public class RefreshTokenValidator {
                 throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
             })
             .next(this::isSameRefreshToken, () -> {
-                log.warn("발급하지 않은 Refresh Token 사용");
+                log.warn("발급되지 않은 Refresh Token 사용");
                 throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
             });
     }

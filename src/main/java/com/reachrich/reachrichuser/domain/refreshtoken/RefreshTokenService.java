@@ -31,7 +31,7 @@ public class RefreshTokenService {
     }
 
     public void createRefreshToken(String nickname, String value) {
-        RefreshToken refreshToken = RefreshToken.ofNicknameAndValue(nickname, value);
+        RefreshToken refreshToken = RefreshToken.of(nickname, value);
         refreshTokenRepository.save(refreshToken);
     }
 

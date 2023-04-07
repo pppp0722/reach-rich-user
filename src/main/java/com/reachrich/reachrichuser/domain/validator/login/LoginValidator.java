@@ -32,6 +32,6 @@ public class LoginValidator {
 
     private boolean isPasswordMatch(LoginObjectToValidate objectToValidate) {
         return objectToValidate.getMaybeUser().get()
-            .isPasswordMatch(objectToValidate.getPasswordEncoder(), objectToValidate.getPassword());
+            .isPasswordMatch(objectToValidate.getPassword());
     }
 }

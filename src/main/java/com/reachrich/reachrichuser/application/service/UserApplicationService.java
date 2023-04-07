@@ -45,8 +45,8 @@ public class UserApplicationService {
     public String login(LoginDto loginDto) {
         Optional<User> maybeUser = userService.getUserByEmail(loginDto.getEmail());
 
-        LoginObjectToValidate objectToValidate = LoginObjectToValidate.of(maybeUser,
-            loginDto.getPassword(), passwordEncoder);
+        LoginObjectToValidate objectToValidate =
+            LoginObjectToValidate.of(maybeUser, passwordEncoder.encode(loginDto.getPassword()));
         new LoginValidator(objectToValidate).execute();
 
         User user = maybeUser.get();
@@ -97,7 +97,9 @@ public class UserApplicationService {
             .execute();
 
         session.removeAttribute(EMAIL_AUTH);
-        User newUser = User.ofPwEncoderAndDto(passwordEncoder, registerDto);
+
+        User newUser = User.of(registerDto.getEmail(), registerDto.getNickname(),
+            passwordEncoder.encode(registerDto.getPassword()));
         return userService.saveUser(newUser).getNickname();
     }
 

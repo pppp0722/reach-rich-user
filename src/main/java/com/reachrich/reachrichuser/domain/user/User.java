@@ -1,6 +1,5 @@
 package com.reachrich.reachrichuser.domain.user;
 
-import com.reachrich.reachrichuser.domain.user.dto.RegisterDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,16 +32,17 @@ public class User {
     @Column(nullable = false, length = 20)
     private String nickname;
 
-    public static User ofPwEncoderAndDto(PasswordEncoder passwordEncoder, RegisterDto registerDto) {
+    public static User of(String email, String nickname, String password) {
+
         return User.builder()
-            .email(registerDto.getEmail())
-            .password(passwordEncoder.encode(registerDto.getPassword()))
-            .nickname(registerDto.getNickname())
+            .email(email)
+            .nickname(nickname)
+            .password(password)
             .build();
     }
 
-    public boolean isPasswordMatch(PasswordEncoder passwordEncoder, String password) {
-        return passwordEncoder.matches(password, this.password);
+    public boolean isPasswordMatch(String password) {
+        return this.password.equals(password);
     }
 
     public String getNickname() {
