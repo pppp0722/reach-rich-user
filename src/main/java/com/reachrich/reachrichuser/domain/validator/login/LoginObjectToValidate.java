@@ -1,4 +1,4 @@
-package com.reachrich.reachrichuser.domain.validator;
+package com.reachrich.reachrichuser.domain.validator.login;
 
 import com.reachrich.reachrichuser.domain.user.User;
 import java.util.Optional;

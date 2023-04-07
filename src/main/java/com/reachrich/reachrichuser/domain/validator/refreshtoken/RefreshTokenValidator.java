@@ -1,9 +1,11 @@
-package com.reachrich.reachrichuser.domain.validator;
+package com.reachrich.reachrichuser.domain.validator.refreshtoken;
 
 import static com.reachrich.reachrichuser.domain.exception.ErrorCode.ACCESS_TOKEN_REISSUE_FAIL;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.reachrich.reachrichuser.domain.exception.CustomException;
+import com.reachrich.reachrichuser.domain.validator.ChainValidator;
+import com.reachrich.reachrichuser.domain.validator.refreshtoken.RefreshTokenObjectToValidate;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 

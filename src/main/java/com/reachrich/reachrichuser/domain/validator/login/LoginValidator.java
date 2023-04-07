@@ -1,8 +1,9 @@
-package com.reachrich.reachrichuser.domain.validator;
+package com.reachrich.reachrichuser.domain.validator.login;
 
 import static com.reachrich.reachrichuser.domain.exception.ErrorCode.LOGIN_DENIED;
 
 import com.reachrich.reachrichuser.domain.exception.CustomException;
+import com.reachrich.reachrichuser.domain.validator.ChainValidator;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

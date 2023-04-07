@@ -1,4 +1,4 @@
-package com.reachrich.reachrichuser.domain.validator;
+package com.reachrich.reachrichuser.domain.validator.refreshtoken;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.reachrich.reachrichuser.domain.refreshtoken.RefreshToken;
