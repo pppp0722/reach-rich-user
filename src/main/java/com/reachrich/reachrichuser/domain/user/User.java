@@ -10,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Table(name = "user")
@@ -33,7 +32,6 @@ public class User {
     private String nickname;
 
     public static User of(String email, String nickname, String password) {
-
         return User.builder()
             .email(email)
             .nickname(nickname)

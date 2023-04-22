@@ -70,6 +70,7 @@ public class UserApplicationService {
 
     public void sendAuthEmail(String email, HttpSession session) {
         if (userService.existsByEmail(email)) {
+            log.info("중복된 이메일 사용 : {}", email);
             throw new CustomException(DUPLICATED_EMAIL);
         }
 
