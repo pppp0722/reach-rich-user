@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -22,7 +23,6 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
-    @Transactional
     public User saveUser(User user) {
         return userRepository.save(user);
     }

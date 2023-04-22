@@ -1,8 +1,8 @@
 package com.reachrich.reachrichuser.presentation.controller;
 
-import static com.reachrich.reachrichuser.infrastructure.util.Const.EMPTY_REFRESH_TOKEN_VALUE;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.JwtType.ACCESS_TOKEN;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.JwtType.EXPIRED_REFRESH_TOKEN;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.EMPTY_REFRESH_TOKEN_VALUE;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.JwtType.ACCESS_TOKEN;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.JwtType.EXPIRED_REFRESH_TOKEN;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 import com.reachrich.reachrichuser.application.service.UserApplicationService;

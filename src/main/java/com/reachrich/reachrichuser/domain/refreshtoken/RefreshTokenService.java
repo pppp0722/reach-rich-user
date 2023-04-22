@@ -14,9 +14,11 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@Transactional
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
@@ -39,10 +41,12 @@ public class RefreshTokenService {
         refreshTokenRepository.deleteById(nickname);
     }
 
+    @Transactional(readOnly = true)
     public String generateRefreshToken(String nickname) {
         return jwtGenerator.generateRefreshToken(nickname);
     }
 
+    @Transactional(readOnly = true)
     public String generateAccessToken(String refreshToken) {
         DecodedJWT decodedRefreshToken;
 

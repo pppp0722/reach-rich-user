@@ -2,11 +2,9 @@ package com.reachrich.reachrichuser.infrastructure.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Const {
+public class Constants { // 객체를 생성할 수 없는 클래스의 이름은 보통 복수형 명사로 짓는다. - 이펙티브 자바
 
     // JWT
     public static final String ACCESS_TOKEN_HEADER = "Access-Token";

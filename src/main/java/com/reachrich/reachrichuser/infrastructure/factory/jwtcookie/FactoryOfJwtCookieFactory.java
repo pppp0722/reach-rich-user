@@ -1,6 +1,6 @@
 package com.reachrich.reachrichuser.infrastructure.factory.jwtcookie;
 
-import com.reachrich.reachrichuser.infrastructure.util.Const.JwtType;
+import com.reachrich.reachrichuser.infrastructure.util.Constants.JwtType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 

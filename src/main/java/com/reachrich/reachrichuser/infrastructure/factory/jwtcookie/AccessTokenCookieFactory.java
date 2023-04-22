@@ -1,7 +1,7 @@
 package com.reachrich.reachrichuser.infrastructure.factory.jwtcookie;
 
-import static com.reachrich.reachrichuser.infrastructure.util.Const.ACCESS_TOKEN_EXPIRY_SECONDS;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.ACCESS_TOKEN_HEADER;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.ACCESS_TOKEN_EXPIRY_SECONDS;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.ACCESS_TOKEN_HEADER;
 
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseCookie.ResponseCookieBuilder;

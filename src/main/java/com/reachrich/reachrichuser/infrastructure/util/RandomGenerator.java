@@ -1,12 +1,12 @@
 package com.reachrich.reachrichuser.infrastructure.util;
 
-import static com.reachrich.reachrichuser.infrastructure.util.Const.ALPHABET_LEN;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.AUTH_CODE_LEN;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.DIGIT;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.LOWER_CASE;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.LOWER_CASE_START;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.UPPER_CASE;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.UPPER_CASE_START;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.ALPHABET_LEN;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.AUTH_CODE_LEN;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.DIGIT;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.LOWER_CASE;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.LOWER_CASE_START;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.UPPER_CASE;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.UPPER_CASE_START;
 
 import java.util.Random;
 import java.util.stream.Collectors;

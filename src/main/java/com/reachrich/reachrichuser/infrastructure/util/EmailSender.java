@@ -1,7 +1,7 @@
 package com.reachrich.reachrichuser.infrastructure.util;
 
 import static com.reachrich.reachrichuser.domain.exception.ErrorCode.EMAIL_SEND_FAILURE;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.EMAIL_SUBJECT;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.EMAIL_SUBJECT;
 
 import com.reachrich.reachrichuser.domain.exception.CustomException;
 import javax.mail.internet.MimeMessage;

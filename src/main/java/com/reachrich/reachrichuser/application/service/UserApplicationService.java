@@ -3,11 +3,11 @@ package com.reachrich.reachrichuser.application.service;
 import static com.reachrich.reachrichuser.domain.exception.ErrorCode.ACCESS_TOKEN_REISSUE_FAIL;
 import static com.reachrich.reachrichuser.domain.exception.ErrorCode.DUPLICATED_EMAIL;
 import static com.reachrich.reachrichuser.domain.exception.ErrorCode.VERIFY_EMAIL_FAILURE;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.AUTH_CODE;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.AUTH_EMAIL_LIMIT_SECONDS;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.EMAIL;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.EMAIL_AUTH;
-import static com.reachrich.reachrichuser.infrastructure.util.Const.EMPTY_REFRESH_TOKEN_VALUE;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.AUTH_CODE;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.AUTH_EMAIL_LIMIT_SECONDS;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.EMAIL;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.EMAIL_AUTH;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.EMPTY_REFRESH_TOKEN_VALUE;
 import static java.util.Objects.isNull;
 
 import com.reachrich.reachrichuser.domain.exception.CustomException;
@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserApplicationService {
 
     private final UserService userService;
@@ -41,7 +42,6 @@ public class UserApplicationService {
     private final PasswordEncoder passwordEncoder;
     private final EmailSender emailSender;
 
-    @Transactional(readOnly = true)
     public String login(LoginDto loginDto) {
         Optional<User> maybeUser = userService.getUserByEmail(loginDto.getEmail());
 
@@ -59,6 +59,7 @@ public class UserApplicationService {
         refreshTokenService.deleteRefreshToken(logoutDto.getNickname());
     }
 
+    @Transactional(readOnly = true)
     public String generateAccessToken(String refreshToken) {
         if (EMPTY_REFRESH_TOKEN_VALUE.equals(refreshToken)) {
             throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
@@ -67,7 +68,6 @@ public class UserApplicationService {
         return refreshTokenService.generateAccessToken(refreshToken);
     }
 
-    @Transactional(readOnly = true)
     public void sendAuthEmail(String email, HttpSession session) {
         if (userService.existsByEmail(email)) {
             throw new CustomException(DUPLICATED_EMAIL);
@@ -80,7 +80,6 @@ public class UserApplicationService {
         session.setMaxInactiveInterval(AUTH_EMAIL_LIMIT_SECONDS);
     }
 
-    @Transactional
     public String register(RegisterDto registerDto, HttpSession session) {
         String email = registerDto.getEmail();
         String authCode = registerDto.getAuthCode();

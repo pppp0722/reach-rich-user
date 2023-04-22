@@ -1,6 +1,6 @@
 package com.reachrich.reachrichuser.domain.refreshtoken;
 
-import static com.reachrich.reachrichuser.infrastructure.util.Const.REFRESH_TOKEN_EXPIRY_SECONDS;
+import static com.reachrich.reachrichuser.infrastructure.util.Constants.REFRESH_TOKEN_EXPIRY_SECONDS;
 
 import java.io.Serializable;
 import lombok.AccessLevel;
