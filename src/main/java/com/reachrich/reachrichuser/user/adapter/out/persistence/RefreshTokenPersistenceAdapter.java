@@ -19,11 +19,7 @@ public class RefreshTokenPersistenceAdapter implements CreateRefreshTokenPort, R
 
     @Override
     public void create(RefreshToken refreshToken) {
-        RefreshTokenEntity entity = RefreshTokenEntity.builder()
-            .nickname(refreshToken.getNickname())
-            .value(refreshToken.getValue())
-            .build();
-        refreshTokenRepository.save(entity);
+        refreshTokenRepository.save(RefreshTokenEntity.ofDomainEntity(refreshToken));
     }
 
     @Override

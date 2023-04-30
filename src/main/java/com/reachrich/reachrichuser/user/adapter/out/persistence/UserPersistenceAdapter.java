@@ -17,14 +17,7 @@ public class UserPersistenceAdapter implements CreateUserPort, ReadUserPort {
 
     @Override
     public String create(User user) {
-        UserEntity entity = UserEntity.builder()
-            .id(user.getId())
-            .email(user.getEmail())
-            .password(user.getPassword())
-            .nickname(user.getNickname())
-            .build();
-
-        return userRepository.save(entity).getNickname();
+        return userRepository.save(UserEntity.ofDomainEntity(user)).getNickname();
     }
 
     @Override

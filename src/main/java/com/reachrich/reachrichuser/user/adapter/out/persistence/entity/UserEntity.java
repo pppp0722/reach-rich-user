@@ -34,6 +34,15 @@ public class UserEntity {
     @Column(nullable = false, length = 20)
     private String nickname;
 
+    public static UserEntity ofDomainEntity(User user) {
+        return builder()
+            .id(user.getId())
+            .email(user.getEmail())
+            .password(user.getPassword())
+            .nickname(user.getNickname())
+            .build();
+    }
+
     public User toDomainEntity() {
         return User.builder()
             .id(id)
