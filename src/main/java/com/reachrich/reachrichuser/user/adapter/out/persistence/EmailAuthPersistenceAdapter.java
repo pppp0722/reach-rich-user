@@ -1,5 +1,7 @@
 package com.reachrich.reachrichuser.user.adapter.out.persistence;
 
+import com.reachrich.reachrichuser.user.adapter.out.persistence.entity.EmailAuthEntity;
+import com.reachrich.reachrichuser.user.adapter.out.persistence.repository.EmailAuthRepository;
 import com.reachrich.reachrichuser.user.application.port.out.emailauth.CreateEmailAuthPort;
 import com.reachrich.reachrichuser.user.application.port.out.emailauth.ReadEmailAuthPort;
 import com.reachrich.reachrichuser.user.domain.EmailAuth;

@@ -1,5 +1,7 @@
 package com.reachrich.reachrichuser.user.adapter.out.persistence;
 
+import com.reachrich.reachrichuser.user.adapter.out.persistence.entity.RefreshTokenEntity;
+import com.reachrich.reachrichuser.user.adapter.out.persistence.repository.RefreshTokenRepository;
 import com.reachrich.reachrichuser.user.application.port.out.refreshtoken.CreateRefreshTokenPort;
 import com.reachrich.reachrichuser.user.application.port.out.refreshtoken.DeleteRefreshTokenPort;
 import com.reachrich.reachrichuser.user.application.port.out.refreshtoken.ReadRefreshTokenPort;

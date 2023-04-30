@@ -1,4 +1,4 @@
-package com.reachrich.reachrichuser.user.adapter.out.persistence;
+package com.reachrich.reachrichuser.user.adapter.out.persistence.entity;
 
 import static com.reachrich.reachrichuser.global.util.Constants.REFRESH_TOKEN_EXPIRY_SECONDS;
 
