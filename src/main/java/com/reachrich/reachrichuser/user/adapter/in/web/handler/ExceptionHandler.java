@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ExceptionHandler {
+class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(CustomException.class)
     private ResponseEntity<ErrorResponse> handleLoginDeniedException(CustomException e) {

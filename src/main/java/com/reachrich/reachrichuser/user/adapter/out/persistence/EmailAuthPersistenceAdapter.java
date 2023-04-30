@@ -1,7 +1,5 @@
 package com.reachrich.reachrichuser.user.adapter.out.persistence;
 
-import com.reachrich.reachrichuser.user.adapter.out.persistence.entity.EmailAuthEntity;
-import com.reachrich.reachrichuser.user.adapter.out.persistence.repository.EmailAuthRepository;
 import com.reachrich.reachrichuser.user.application.port.out.emailauth.CreateEmailAuthPort;
 import com.reachrich.reachrichuser.user.application.port.out.emailauth.ReadEmailAuthPort;
 import com.reachrich.reachrichuser.user.domain.EmailAuth;
@@ -11,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class EmailAuthPersistenceAdapter implements CreateEmailAuthPort, ReadEmailAuthPort {
+class EmailAuthPersistenceAdapter implements CreateEmailAuthPort, ReadEmailAuthPort {
 
     private final EmailAuthRepository emailAuthRepository;
 

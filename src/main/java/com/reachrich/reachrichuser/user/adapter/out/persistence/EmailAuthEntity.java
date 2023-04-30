@@ -1,4 +1,4 @@
-package com.reachrich.reachrichuser.user.adapter.out.persistence.entity;
+package com.reachrich.reachrichuser.user.adapter.out.persistence;
 
 import static com.reachrich.reachrichuser.global.util.Constants.AUTH_EMAIL_LIMIT_SECONDS;
 
@@ -16,7 +16,7 @@ import org.springframework.data.redis.core.RedisHash;
 @AllArgsConstructor
 @Builder
 @Getter
-public class EmailAuthEntity {
+class EmailAuthEntity {
 
     @Id
     private String email;

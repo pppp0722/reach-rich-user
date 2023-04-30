@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class RegisterService implements SendAuthEmailUseCase, RegisterUseCase {
+class RegisterService implements SendAuthEmailUseCase, RegisterUseCase {
 
     private final CreateUserPort createUserPort;
     private final ReadUserPort readUserPort;

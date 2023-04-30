@@ -1,7 +1,5 @@
 package com.reachrich.reachrichuser.user.adapter.out.persistence;
 
-import com.reachrich.reachrichuser.user.adapter.out.persistence.entity.UserEntity;
-import com.reachrich.reachrichuser.user.adapter.out.persistence.repository.UserRepository;
 import com.reachrich.reachrichuser.user.application.port.out.user.CreateUserPort;
 import com.reachrich.reachrichuser.user.application.port.out.user.ReadUserPort;
 import com.reachrich.reachrichuser.user.domain.User;
@@ -11,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserPersistenceAdapter implements CreateUserPort, ReadUserPort {
+class UserPersistenceAdapter implements CreateUserPort, ReadUserPort {
 
     private final UserRepository userRepository;
 

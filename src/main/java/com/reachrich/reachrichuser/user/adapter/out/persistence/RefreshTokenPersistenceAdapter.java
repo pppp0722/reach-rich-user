@@ -1,7 +1,5 @@
 package com.reachrich.reachrichuser.user.adapter.out.persistence;
 
-import com.reachrich.reachrichuser.user.adapter.out.persistence.entity.RefreshTokenEntity;
-import com.reachrich.reachrichuser.user.adapter.out.persistence.repository.RefreshTokenRepository;
 import com.reachrich.reachrichuser.user.application.port.out.refreshtoken.CreateRefreshTokenPort;
 import com.reachrich.reachrichuser.user.application.port.out.refreshtoken.DeleteRefreshTokenPort;
 import com.reachrich.reachrichuser.user.application.port.out.refreshtoken.ReadRefreshTokenPort;
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RefreshTokenPersistenceAdapter implements CreateRefreshTokenPort, ReadRefreshTokenPort,
+class RefreshTokenPersistenceAdapter implements CreateRefreshTokenPort, ReadRefreshTokenPort,
     DeleteRefreshTokenPort {
 
     private final RefreshTokenRepository refreshTokenRepository;

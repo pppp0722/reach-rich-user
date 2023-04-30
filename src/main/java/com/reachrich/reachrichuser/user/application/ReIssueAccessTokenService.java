@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ReIssueAccessTokenService implements ReIssueAccessTokenUseCase {
+class ReIssueAccessTokenService implements ReIssueAccessTokenUseCase {
 
     private final ReadRefreshTokenPort readRefreshTokenPort;
     private final JWTVerifier jwtVerifier;

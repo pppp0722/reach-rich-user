@@ -6,7 +6,7 @@ import static com.reachrich.reachrichuser.global.util.Constants.ACCESS_TOKEN_HEA
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseCookie.ResponseCookieBuilder;
 
-public class AccessTokenCookieFactory extends JwtCookieFactory {
+class AccessTokenCookieFactory extends JwtCookieFactory {
 
     @Override
     protected ResponseCookieBuilder createJwtCookieBuilder(String jwt) {

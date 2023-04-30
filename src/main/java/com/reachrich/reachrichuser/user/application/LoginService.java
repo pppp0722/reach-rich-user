@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class LoginService implements LoginUseCase, LogoutUseCase {
+class LoginService implements LoginUseCase, LogoutUseCase {
 
     private final ReadUserPort readUserPort;
     private final CreateRefreshTokenPort createRefreshTokenPort;

@@ -1,4 +1,4 @@
-package com.reachrich.reachrichuser.user.adapter.out.persistence.entity;
+package com.reachrich.reachrichuser.user.adapter.out.persistence;
 
 import com.reachrich.reachrichuser.user.domain.User;
 import javax.persistence.Column;

@@ -6,7 +6,7 @@ import static com.reachrich.reachrichuser.global.util.Constants.REFRESH_TOKEN_HE
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseCookie.ResponseCookieBuilder;
 
-public class RefreshTokenCookieFactory extends JwtCookieFactory {
+class RefreshTokenCookieFactory extends JwtCookieFactory {
 
     @Override
     protected ResponseCookieBuilder createJwtCookieBuilder(String jwt) {

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class ReIssueAccessTokenController {
+class ReIssueAccessTokenController {
 
     private final ReIssueAccessTokenUseCase reIssueAccessTokenUseCase;
 
