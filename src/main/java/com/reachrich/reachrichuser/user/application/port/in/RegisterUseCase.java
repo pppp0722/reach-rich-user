@@ -1,8 +1,8 @@
 package com.reachrich.reachrichuser.user.application.port.in;
 
-import com.reachrich.reachrichuser.user.domain.dto.RegisterDto;
+import com.reachrich.reachrichuser.user.application.port.in.command.RegisterCommand;
 
 public interface RegisterUseCase {
 
-    String register(RegisterDto registerDto);
+    String register(RegisterCommand command);
 }

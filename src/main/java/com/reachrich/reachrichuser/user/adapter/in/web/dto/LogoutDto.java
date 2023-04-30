@@ -1,4 +1,4 @@
-package com.reachrich.reachrichuser.user.domain.dto;
+package com.reachrich.reachrichuser.user.adapter.in.web.dto;
 
 import lombok.Getter;
 

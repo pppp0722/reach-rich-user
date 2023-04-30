@@ -17,17 +17,25 @@ public class UserPersistenceAdapter implements CreateUserPort, ReadUserPort {
 
     @Override
     public String create(User user) {
-        UserEntity userEntity = user.toUserEntity();
-        return userRepository.save(userEntity).getNickname();
+        UserEntity entity = UserEntity.builder()
+            .id(user.getId())
+            .email(user.getEmail())
+            .password(user.getPassword())
+            .nickname(user.getNickname())
+            .build();
+
+        return userRepository.save(entity).getNickname();
     }
 
     @Override
     public Optional<User> readByEmail(String email) {
-        Optional<UserEntity> maybeUserEntity = userRepository.findByEmail(email);
-        if (maybeUserEntity.isEmpty()) {
+        Optional<UserEntity> maybeEntity = userRepository.findByEmail(email);
+
+        if (maybeEntity.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(maybeUserEntity.get().toDomainEntity());
+
+        return Optional.of(maybeEntity.get().toDomainEntity());
     }
 
     @Override

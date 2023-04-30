@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.reachrich.reachrichuser.global.util.JwtGenerator;
 import com.reachrich.reachrichuser.user.application.port.in.ReIssueAccessTokenUseCase;
+import com.reachrich.reachrichuser.user.application.port.in.command.ReIssueAccessTokenCommand;
 import com.reachrich.reachrichuser.user.application.port.out.refreshtoken.ReadRefreshTokenPort;
 import com.reachrich.reachrichuser.user.application.validator.refreshtoken.RefreshTokenObjectToValidate;
 import com.reachrich.reachrichuser.user.application.validator.refreshtoken.RefreshTokenValidator;
@@ -31,15 +32,17 @@ public class ReIssueAccessTokenService implements ReIssueAccessTokenUseCase {
 
     @Override
     @Transactional(readOnly = true)
-    public String reIssueAccessToken(String refreshToken) {
-        if (EMPTY_REFRESH_TOKEN_VALUE.equals(refreshToken)) {
+    public String reIssueAccessToken(ReIssueAccessTokenCommand command) {
+        String refreshTokenValue = command.getRefreshTokenValue();
+
+        if (EMPTY_REFRESH_TOKEN_VALUE.equals(command.getRefreshTokenValue())) {
             throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
         }
 
         DecodedJWT decodedRefreshToken;
 
         try {
-            decodedRefreshToken = jwtVerifier.verify(refreshToken);
+            decodedRefreshToken = jwtVerifier.verify(refreshTokenValue);
         } catch (JWTVerificationException e) {
             log.warn("Refresh Token 검증 실패 : {}", e.getMessage());
             throw new CustomException(ACCESS_TOKEN_REISSUE_FAIL);
@@ -49,7 +52,7 @@ public class ReIssueAccessTokenService implements ReIssueAccessTokenUseCase {
         Optional<RefreshToken> maybeRefreshToken = readRefreshTokenPort.readByNickname(nickname);
 
         RefreshTokenObjectToValidate objectToValidate = RefreshTokenObjectToValidate.of(
-            decodedRefreshToken, refreshToken, maybeRefreshToken);
+            decodedRefreshToken, refreshTokenValue, maybeRefreshToken);
         new RefreshTokenValidator(objectToValidate).execute();
 
         return jwtGenerator.generateAccessToken(nickname);

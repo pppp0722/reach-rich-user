@@ -6,6 +6,7 @@ import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 import com.reachrich.reachrichuser.user.adapter.in.web.cookiefactory.FactoryOfJwtCookieFactory;
 import com.reachrich.reachrichuser.user.application.port.in.ReIssueAccessTokenUseCase;
+import com.reachrich.reachrichuser.user.application.port.in.command.ReIssueAccessTokenCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +26,10 @@ public class ReIssueAccessTokenController {
     public ResponseEntity<Void> generateAccessToken(
         @CookieValue(value = "Refresh-Token", defaultValue = EMPTY_REFRESH_TOKEN_VALUE) String refreshToken) {
 
-        String accessToken = reIssueAccessTokenUseCase.reIssueAccessToken(refreshToken);
-        ResponseCookie cookie = FactoryOfJwtCookieFactory.createJwtCookie(ACCESS_TOKEN,
-            accessToken);
+        ReIssueAccessTokenCommand command = new ReIssueAccessTokenCommand(refreshToken);
+        String accessToken = reIssueAccessTokenUseCase.reIssueAccessToken(command);
+        ResponseCookie cookie =
+            FactoryOfJwtCookieFactory.createJwtCookie(ACCESS_TOKEN, accessToken);
 
         return ResponseEntity.ok().header(SET_COOKIE, cookie.toString()).build();
     }

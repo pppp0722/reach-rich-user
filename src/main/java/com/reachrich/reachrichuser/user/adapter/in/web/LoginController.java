@@ -5,10 +5,12 @@ import static com.reachrich.reachrichuser.global.util.Constants.JwtType.REFRESH_
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 import com.reachrich.reachrichuser.user.adapter.in.web.cookiefactory.FactoryOfJwtCookieFactory;
+import com.reachrich.reachrichuser.user.adapter.in.web.dto.LoginDto;
+import com.reachrich.reachrichuser.user.adapter.in.web.dto.LogoutDto;
 import com.reachrich.reachrichuser.user.application.port.in.LoginUseCase;
 import com.reachrich.reachrichuser.user.application.port.in.LogoutUseCase;
-import com.reachrich.reachrichuser.user.domain.dto.LoginDto;
-import com.reachrich.reachrichuser.user.domain.dto.LogoutDto;
+import com.reachrich.reachrichuser.user.application.port.in.command.LoginCommand;
+import com.reachrich.reachrichuser.user.application.port.in.command.LogoutCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,9 @@ public class LoginController {
     private final LogoutUseCase logoutUseCase;
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginDto loginDto) {
-        String refreshTokenValue = loginUseCase.login(loginDto);
+    public ResponseEntity<Void> login(@RequestBody LoginDto dto) {
+        LoginCommand command = new LoginCommand(dto.getEmail(), dto.getPassword());
+        String refreshTokenValue = loginUseCase.login(command);
         ResponseCookie cookie = FactoryOfJwtCookieFactory.createJwtCookie(REFRESH_TOKEN,
             refreshTokenValue);
 
@@ -35,8 +38,9 @@ public class LoginController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestBody LogoutDto logoutDto) {
-        logoutUseCase.logout(logoutDto);
+    public ResponseEntity<Void> logout(@RequestBody LogoutDto dto) {
+        LogoutCommand command = new LogoutCommand(dto.getNickname());
+        logoutUseCase.logout(command);
         ResponseCookie cookie =
             FactoryOfJwtCookieFactory.createJwtCookie(EXPIRED_REFRESH_TOKEN, null);
 

@@ -1,9 +1,10 @@
 package com.reachrich.reachrichuser.user.domain;
 
-import com.reachrich.reachrichuser.user.adapter.out.persistence.entity.EmailAuthEntity;
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class EmailAuth {
 
     private String email;
@@ -18,12 +19,5 @@ public class EmailAuth {
 
     public boolean verify(String authCode) {
         return this.authCode.equals(authCode);
-    }
-
-    public EmailAuthEntity toRedisEntity() {
-        return EmailAuthEntity.builder()
-            .email(email)
-            .authCode(authCode)
-            .build();
     }
 }

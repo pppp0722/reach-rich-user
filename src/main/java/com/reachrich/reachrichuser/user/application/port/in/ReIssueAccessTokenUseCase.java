@@ -1,6 +1,8 @@
 package com.reachrich.reachrichuser.user.application.port.in;
 
+import com.reachrich.reachrichuser.user.application.port.in.command.ReIssueAccessTokenCommand;
+
 public interface ReIssueAccessTokenUseCase {
 
-    String reIssueAccessToken(String refreshToken);
+    String reIssueAccessToken(ReIssueAccessTokenCommand command);
 }

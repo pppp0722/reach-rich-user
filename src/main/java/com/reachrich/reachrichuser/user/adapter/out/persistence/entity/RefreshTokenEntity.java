@@ -7,6 +7,7 @@ import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
@@ -15,23 +16,13 @@ import org.springframework.data.redis.core.RedisHash;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Getter
 public class RefreshTokenEntity implements Serializable {
 
     @Id
     private String nickname;
 
     private String value;
-
-    public static RefreshTokenEntity of(String nickname, String value) {
-        return RefreshTokenEntity.builder()
-            .nickname(nickname)
-            .value(value)
-            .build();
-    }
-
-    public boolean isSameValue(String refreshToken) {
-        return value.equals(refreshToken);
-    }
 
     public RefreshToken toDomainEntity() {
         return RefreshToken.builder()

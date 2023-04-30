@@ -10,14 +10,15 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Getter
 public class UserEntity {
 
     @Id
@@ -40,13 +41,5 @@ public class UserEntity {
             .password(password)
             .nickname(nickname)
             .build();
-    }
-
-    public boolean isPasswordMatch(String password) {
-        return this.password.equals(password);
-    }
-
-    public String getNickname() {
-        return nickname;
     }
 }

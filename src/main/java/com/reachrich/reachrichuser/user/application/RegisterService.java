@@ -6,15 +6,16 @@ import static com.reachrich.reachrichuser.user.domain.exception.ErrorCode.VERIFY
 import com.reachrich.reachrichuser.global.util.RandomGenerator;
 import com.reachrich.reachrichuser.user.application.port.in.RegisterUseCase;
 import com.reachrich.reachrichuser.user.application.port.in.SendAuthEmailUseCase;
-import com.reachrich.reachrichuser.user.application.port.out.emailauth.CreateEmailAuthPort;
-import com.reachrich.reachrichuser.user.application.port.out.user.CreateUserPort;
-import com.reachrich.reachrichuser.user.application.port.out.emailauth.ReadEmailAuthPort;
-import com.reachrich.reachrichuser.user.application.port.out.user.ReadUserPort;
+import com.reachrich.reachrichuser.user.application.port.in.command.RegisterCommand;
+import com.reachrich.reachrichuser.user.application.port.in.command.SendAuthEmailCommand;
 import com.reachrich.reachrichuser.user.application.port.out.email.SendEmailPort;
+import com.reachrich.reachrichuser.user.application.port.out.emailauth.CreateEmailAuthPort;
+import com.reachrich.reachrichuser.user.application.port.out.emailauth.ReadEmailAuthPort;
+import com.reachrich.reachrichuser.user.application.port.out.user.CreateUserPort;
+import com.reachrich.reachrichuser.user.application.port.out.user.ReadUserPort;
 import com.reachrich.reachrichuser.user.application.validator.ChainValidator;
 import com.reachrich.reachrichuser.user.domain.EmailAuth;
 import com.reachrich.reachrichuser.user.domain.User;
-import com.reachrich.reachrichuser.user.domain.dto.RegisterDto;
 import com.reachrich.reachrichuser.user.domain.exception.CustomException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,8 @@ public class RegisterService implements SendAuthEmailUseCase, RegisterUseCase {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void sendAuthEmail(String email) {
+    public void sendAuthEmail(SendAuthEmailCommand command) {
+        String email = command.getEmail();
         if (readUserPort.existsByEmail(email)) {
             log.info("중복된 이메일 사용 : {}", email);
             throw new CustomException(DUPLICATED_EMAIL);
@@ -50,23 +52,22 @@ public class RegisterService implements SendAuthEmailUseCase, RegisterUseCase {
     }
 
     @Override
-    public String register(RegisterDto registerDto) {
-        String email = registerDto.getEmail();
-        String authCode = registerDto.getAuthCode();
+    public String register(RegisterCommand command) {
+        String email = command.getEmail();
 
         new ChainValidator<>(null)
             .next(e -> !readUserPort.existsByEmail(email), () -> {
                 log.info("중복된 이메일 사용 : {}", email);
                 throw new CustomException(DUPLICATED_EMAIL);
             })
-            .next(e -> isEmailAuthenticated(email, authCode), () -> {
+            .next(e -> isEmailAuthenticated(email, command.getAuthCode()), () -> {
                 log.info("이메일 인증 실패");
                 throw new CustomException(VERIFY_EMAIL_FAILURE);
             })
             .execute();
 
-        User newUser = User.of(email, passwordEncoder.encode(registerDto.getPassword()),
-            registerDto.getNickname());
+        User newUser = User.of(email, passwordEncoder.encode(command.getPassword()),
+            command.getNickname());
 
         return createUserPort.create(newUser);
     }
