@@ -2,6 +2,7 @@ package com.reachrich.reachrichuser.user.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Builder
 @Getter
@@ -18,5 +19,9 @@ public class User {
             .password(password)
             .nickname(nickname)
             .build();
+    }
+
+    public boolean isPasswordMatch(String rawPassword, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(rawPassword, this.password);
     }
 }

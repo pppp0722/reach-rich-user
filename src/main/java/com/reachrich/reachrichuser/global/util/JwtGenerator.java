@@ -4,13 +4,15 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import java.util.Date;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor // Mockito 사용을 위한 기본 생성자
 public class JwtGenerator {
 
-    private final String issuer;
-    private final Algorithm algorithm;
-    private final long accessTokenExpirySeconds;
-    private final long refreshTokenExpirySeconds;
+    private String issuer;
+    private Algorithm algorithm;
+    private long accessTokenExpirySeconds;
+    private long refreshTokenExpirySeconds;
 
     @Builder
     public JwtGenerator(String issuer, String clientSecret, long accessTokenExpirySeconds,

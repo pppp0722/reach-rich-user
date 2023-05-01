@@ -3,9 +3,9 @@ package com.reachrich.reachrichuser.user.application;
 import static com.reachrich.reachrichuser.global.util.Constants.EMPTY_REFRESH_TOKEN_VALUE;
 import static com.reachrich.reachrichuser.user.domain.exception.ErrorCode.ACCESS_TOKEN_REISSUE_FAIL;
 
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import com.reachrich.reachrichuser.global.util.JwtGenerator;
 import com.reachrich.reachrichuser.user.application.port.in.ReIssueAccessTokenUseCase;
 import com.reachrich.reachrichuser.user.application.port.in.command.ReIssueAccessTokenCommand;
