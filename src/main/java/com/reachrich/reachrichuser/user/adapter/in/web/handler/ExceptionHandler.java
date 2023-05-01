@@ -7,9 +7,11 @@ import com.reachrich.reachrichuser.user.domain.exception.CustomException;
 import com.reachrich.reachrichuser.user.domain.exception.ErrorCode;
 import com.reachrich.reachrichuser.user.domain.exception.ErrorResponse;
 import javax.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 class ExceptionHandler {
 
@@ -27,6 +29,7 @@ class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
     private ResponseEntity<ErrorResponse> handleException(Exception e) {
+        log.error("서버에 심각한 오류 발생: {}", e.getMessage());
         return handleExceptionInternal(INTERNAL_SERVER_ERROR);
     }
 
