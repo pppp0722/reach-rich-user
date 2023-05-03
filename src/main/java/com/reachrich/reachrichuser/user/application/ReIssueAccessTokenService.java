@@ -1,6 +1,7 @@
 package com.reachrich.reachrichuser.user.application;
 
 import static com.reachrich.reachrichuser.global.util.Constants.EMPTY_REFRESH_TOKEN_VALUE;
+import static com.reachrich.reachrichuser.global.util.Constants.ROLES;
 import static com.reachrich.reachrichuser.user.domain.exception.ErrorCode.ACCESS_TOKEN_REISSUE_FAIL;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
@@ -55,6 +56,8 @@ class ReIssueAccessTokenService implements ReIssueAccessTokenUseCase {
             decodedRefreshToken, refreshTokenValue, maybeRefreshToken);
         new RefreshTokenValidator(objectToValidate).execute();
 
-        return jwtGenerator.generateAccessToken(nickname);
+        String[] roles = decodedRefreshToken.getClaim(ROLES).asArray(String.class);
+
+        return jwtGenerator.generateAccessToken(nickname, roles);
     }
 }

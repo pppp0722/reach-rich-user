@@ -1,5 +1,6 @@
 package com.reachrich.reachrichuser.user.application;
 
+import static com.reachrich.reachrichuser.user.domain.Role.ROLE_USER;
 import static com.reachrich.reachrichuser.user.domain.exception.ErrorCode.DUPLICATED_EMAIL;
 import static com.reachrich.reachrichuser.user.domain.exception.ErrorCode.VERIFY_EMAIL_FAILURE;
 
@@ -17,6 +18,7 @@ import com.reachrich.reachrichuser.user.application.validator.ChainValidator;
 import com.reachrich.reachrichuser.user.domain.EmailAuth;
 import com.reachrich.reachrichuser.user.domain.User;
 import com.reachrich.reachrichuser.user.domain.exception.CustomException;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +69,7 @@ class RegisterService implements SendAuthEmailUseCase, RegisterUseCase {
             .execute();
 
         User newUser = User.of(email, passwordEncoder.encode(command.getPassword()),
-            command.getNickname());
+            command.getNickname(), List.of(ROLE_USER));
 
         return createUserPort.create(newUser);
     }

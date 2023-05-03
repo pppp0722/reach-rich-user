@@ -29,7 +29,7 @@ class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
     private ResponseEntity<ErrorResponse> handleException(Exception e) {
-        log.error("서버에 심각한 오류 발생: {}", e.getMessage());
+        log.error("예상치 못한 오류 발생: ", e);
         return handleExceptionInternal(INTERNAL_SERVER_ERROR);
     }
 

@@ -23,21 +23,22 @@ public class JwtGenerator {
         this.refreshTokenExpirySeconds = refreshTokenExpirySeconds;
     }
 
-    public String generateRefreshToken(String nickname) {
-        return generateToken(nickname, refreshTokenExpirySeconds);
+    public String generateRefreshToken(String nickname, String[] roles) {
+        return generateToken(nickname, roles, refreshTokenExpirySeconds);
     }
 
-    public String generateAccessToken(String nickname) {
-        return generateToken(nickname, accessTokenExpirySeconds);
+    public String generateAccessToken(String nickname, String roles[]) {
+        return generateToken(nickname, roles, accessTokenExpirySeconds);
     }
 
-    private String generateToken(String nickname, long expirySeconds) {
+    private String generateToken(String nickname, String roles[], long expirySeconds) {
         Date now = new Date();
         JWTCreator.Builder builder = com.auth0.jwt.JWT.create();
         builder.withIssuer(issuer);
         builder.withIssuedAt(now);
         builder.withExpiresAt(new Date(now.getTime() + expirySeconds * 1_000L));
         builder.withClaim("aud", nickname);
+        builder.withArrayClaim("roles", roles);
         return builder.sign(algorithm);
     }
 }

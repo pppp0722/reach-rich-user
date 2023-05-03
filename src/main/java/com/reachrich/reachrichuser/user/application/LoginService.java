@@ -11,6 +11,7 @@ import com.reachrich.reachrichuser.user.application.port.out.user.ReadUserPort;
 import com.reachrich.reachrichuser.user.application.validator.login.LoginObjectToValidate;
 import com.reachrich.reachrichuser.user.application.validator.login.LoginValidator;
 import com.reachrich.reachrichuser.user.domain.RefreshToken;
+import com.reachrich.reachrichuser.user.domain.Role;
 import com.reachrich.reachrichuser.user.domain.User;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,8 @@ class LoginService implements LoginUseCase, LogoutUseCase {
 
         User user = maybeUser.get();
         String nickname = user.getNickname();
-        String refreshTokenValue = jwtGenerator.generateRefreshToken(nickname);
+        String[] roles = Role.toStringArray(user.getRoles());
+        String refreshTokenValue = jwtGenerator.generateRefreshToken(nickname, roles);
 
         createRefreshTokenPort.create(RefreshToken.of(nickname, refreshTokenValue));
 

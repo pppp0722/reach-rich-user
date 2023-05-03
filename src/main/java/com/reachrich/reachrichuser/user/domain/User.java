@@ -1,5 +1,6 @@
 package com.reachrich.reachrichuser.user.domain;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,12 +13,14 @@ public class User {
     private String email;
     private String password;
     private String nickname;
+    private List<Role> roles;
 
-    public static User of(String email, String password, String nickname) {
+    public static User of(String email, String password, String nickname, List<Role> roles) {
         return builder()
             .email(email)
             .password(password)
             .nickname(nickname)
+            .roles(roles)
             .build();
     }
 
