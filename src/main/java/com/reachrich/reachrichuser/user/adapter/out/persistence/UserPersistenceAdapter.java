@@ -17,7 +17,7 @@ class UserPersistenceAdapter implements CreateUserPort, ReadUserPort {
 
     @Override
     public String create(User user) {
-        return userRepository.save(UserEntity.ofDomainEntity(user)).getNickname();
+        return userRepository.save(UserEntity.fromDomainEntity(user)).getNickname();
     }
 
     @Override

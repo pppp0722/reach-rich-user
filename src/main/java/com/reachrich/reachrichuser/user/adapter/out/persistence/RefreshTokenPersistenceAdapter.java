@@ -19,7 +19,7 @@ class RefreshTokenPersistenceAdapter implements CreateRefreshTokenPort, ReadRefr
 
     @Override
     public void create(RefreshToken refreshToken) {
-        refreshTokenRepository.save(RefreshTokenEntity.ofDomainEntity(refreshToken));
+        refreshTokenRepository.save(RefreshTokenEntity.fromDomainEntity(refreshToken));
     }
 
     @Override

@@ -7,7 +7,6 @@ import com.reachrich.reachrichuser.user.domain.Role;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +24,7 @@ public class RoleVo {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static RoleVo of(Role role) {
+    public static RoleVo from(Role role) {
         return role == ROLE_ADMIN ? ADMIN : USER;
     }
 }

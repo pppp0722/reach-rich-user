@@ -23,7 +23,7 @@ public class EmailAuthEntity {
 
     private String authCode;
 
-    public static EmailAuthEntity ofDomainEntity(EmailAuth emailAuth) {
+    public static EmailAuthEntity fromDomainEntity(EmailAuth emailAuth) {
         return builder()
             .email(emailAuth.getEmail())
             .authCode(emailAuth.getAuthCode())

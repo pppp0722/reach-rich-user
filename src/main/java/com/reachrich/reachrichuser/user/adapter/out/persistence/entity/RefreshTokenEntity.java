@@ -24,7 +24,7 @@ public class RefreshTokenEntity implements Serializable {
 
     private String value;
 
-    public static RefreshTokenEntity ofDomainEntity(RefreshToken refreshToken) {
+    public static RefreshTokenEntity fromDomainEntity(RefreshToken refreshToken) {
         return builder()
             .nickname(refreshToken.getNickname())
             .value(refreshToken.getValue())

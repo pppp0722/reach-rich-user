@@ -48,7 +48,7 @@ public class UserEntity {
     )
     private List<RoleVo> roles = new ArrayList<>();
 
-    public static UserEntity ofDomainEntity(User user) {
+    public static UserEntity fromDomainEntity(User user) {
         return builder()
             .id(user.getId())
             .email(user.getEmail())
@@ -56,7 +56,7 @@ public class UserEntity {
             .nickname(user.getNickname())
             .roles(
                 user.getRoles().stream()
-                    .map(RoleVo::of)
+                    .map(RoleVo::from)
                     .collect(Collectors.toList())
             )
             .build();

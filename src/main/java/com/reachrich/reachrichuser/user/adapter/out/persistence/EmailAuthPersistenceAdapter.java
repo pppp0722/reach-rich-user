@@ -17,7 +17,7 @@ class EmailAuthPersistenceAdapter implements CreateEmailAuthPort, ReadEmailAuthP
 
     @Override
     public void create(EmailAuth emailAuth) {
-        emailAuthRepository.save(EmailAuthEntity.ofDomainEntity(emailAuth));
+        emailAuthRepository.save(EmailAuthEntity.fromDomainEntity(emailAuth));
     }
 
     @Override
